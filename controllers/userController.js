@@ -280,6 +280,7 @@ export function deleteUser(req,res){
 }
 
 export function getUserDetails(req,res){
+    console.log("getting user details")
     if (req.user == null){
         res.json({
             user:null
