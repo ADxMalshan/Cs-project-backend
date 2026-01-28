@@ -20,7 +20,6 @@ export function saveUser(req, res) {
         }
 
     }
-    console.log(req.body)
 
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const user = new User({
@@ -28,10 +27,9 @@ export function saveUser(req, res) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         password: hashedPassword,
-        profilePicture:"loginBackground3.jpeg",
+        profilePicture:"https://vzkmtbdcbuxxtsmnjwcl.supabase.co/storage/v1/object/public/images/1751450096442WhatsApp%20Image%202025-06-28%20at%208.04.25%20PM.jpeg",
         role: req.body.role
     }) 
-
 
     user.save().then(() => {
         res.json({
@@ -40,7 +38,6 @@ export function saveUser(req, res) {
         })
     }).catch(
         (err) => {
-            console.log(err)
             res.status(500).json({
                 message: "User not created"
             })
@@ -134,8 +131,6 @@ export async function googleLogin(req, res) {
                 token: token,
                 user: userData
             })
-
-
         }
         else{
 
@@ -156,7 +151,6 @@ export async function googleLogin(req, res) {
                 token: token,
                 user: userData
             })
-
         }
 
     }
@@ -168,7 +162,6 @@ export async function googleLogin(req, res) {
             }
         )
     }
-
 }
 
 export function getUsers(req,res){
