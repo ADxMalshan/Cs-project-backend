@@ -73,7 +73,7 @@ export function getAppointment(req, res) {
         })
         return;
     }
-    if (req.user.role == "admin" || req.user.role == "superadmin") {
+    if (req.user.role == "admin") {
         appointment.find().then(
             (appointments) => {
                 res.json(appointments)
@@ -108,6 +108,7 @@ export function getAppointment(req, res) {
 
 
 export async function updateAppointment(req, res) {
+    console.log(req.params);
     try {
         if (req.user == null) {
             res.status(401).json({
@@ -123,7 +124,7 @@ export async function updateAppointment(req, res) {
         }
 
         const appointmentId = req.params.appointmentId
-        let appointment = await appointment.findOneAndUpdate({ appointmentId: appointmentId }, req.body)
+        let appointmen = await appointment.findOneAndUpdate({ appointmentId: appointmentId }, req.body)
         res.json({
             message: "Appointment updated successfully"
         })

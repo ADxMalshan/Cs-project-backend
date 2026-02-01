@@ -165,6 +165,7 @@ export async function googleLogin(req, res) {
 }
 
 export function getUsers(req,res){
+    console.log("ok")
     if (req.user == null){
         res.status(403).json({
             message: "You need to login first"
