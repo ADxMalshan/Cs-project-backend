@@ -3,7 +3,6 @@ import image from "../models/image.js";
 
 
 export async function createAppointment(req, res) {
-    console.log(req.body);
     if (req.user == null) {
         res.status(403).json({
             message: "unauthorized"
@@ -32,7 +31,6 @@ export async function createAppointment(req, res) {
     }).limit(1).then(async (lastAppointments) => {
         if (lastAppointments.length == 0) {
             appointmentData.appointmentId = "APP0001"
-            console.log("done")
         } else {
             const lastAppointment = lastAppointments[0]
             const lastAppointmentId = lastAppointment.appointmentId  //APP001
@@ -73,7 +71,7 @@ export function getAppointment(req, res) {
         })
         return;
     }
-    if (req.user.role == "admin") {
+    if (req.user.role == "admin" || req.user.role == "superadmin") {
         appointment.find().then(
             (appointments) => {
                 res.json(appointments)
@@ -109,6 +107,7 @@ export function getAppointment(req, res) {
 
 export async function updateAppointment(req, res) {
     console.log(req.params);
+    console.log(req.body);
     try {
         if (req.user == null) {
             res.status(401).json({
@@ -145,7 +144,7 @@ export async function updateAppointment(req, res) {
 export async function deleteAppointment(req, res) {
     try {
         console.log(req.user);
-        if (req.user == null) {
+        if (req.user == null) { 
             res.status(401).json({
                 message: "unauthorized"
             })
