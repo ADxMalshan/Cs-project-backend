@@ -107,6 +107,7 @@ export function getAppointment(req, res) {
 
 export async function updateAppointment(req, res) {
     try {
+        console
         if (req.user == null) {
             res.status(401).json({
                 message: "unauthorized"
@@ -137,6 +138,40 @@ export async function updateAppointment(req, res) {
 
     }
 
+}
+export async function updateAppointmentUser(req, res) {
+        console.log(req.body)
+        if (req.user == null) {
+            res.status(401).json({
+                message: "unauthorized"
+            })
+            return;
+        }
+        let imageUrl =""
+        await image.find({
+            petType: req.body.petDetails.petType
+        }).then((images) => {
+            imageUrl = images[0].link
+        }).catch((err) => {
+            console.log(err);
+        })
+        appointment.findOneAndUpdate({ appointmentId: req.params.appointmentId, email: req.user.email }, 
+            {
+                ...req.body,
+                status: "Complete",
+                imageUrl: imageUrl
+            }
+
+        ).then(() => {
+            res.json({
+                message: "Appointment updated successfully"
+            })
+        }).catch((err) => {
+            console.log(err)
+            res.status(500).json({
+                message: "An error occurred"
+            })
+        })
 }
 
 export async function deleteAppointment(req, res) {
