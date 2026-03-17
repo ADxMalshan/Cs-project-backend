@@ -8,6 +8,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import appointmentRouter from './Routes/appointmentHistoryRouter.js';
 import orderRouter from './Routes/orderRouter.js';
+import cron from 'node-cron';
+import { deleteOldAppointment } from './controllers/appointmentHistroyController.js';
 
 dotenv.config();
 
@@ -33,6 +35,9 @@ app.use("/api/product", productRouter)
 app.use("/api/appointment",appointmentRouter)
 app.use("/api/order",orderRouter)
 
+cron.schedule('0 0 * * *', async () => {
+    deleteOldAppointment();
+});
 
 
 app.listen(3000, () => {

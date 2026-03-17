@@ -106,8 +106,6 @@ export function getAppointment(req, res) {
 
 
 export async function updateAppointment(req, res) {
-    console.log(req.params);
-    console.log(req.body);
     try {
         if (req.user == null) {
             res.status(401).json({
@@ -143,31 +141,39 @@ export async function updateAppointment(req, res) {
 
 export async function deleteAppointment(req, res) {
     try {
-        console.log(req.user);
-        if (req.user == null) { 
+        const appointmentId = req.params.appointmentId
+        if (req.user == null) {
             res.status(401).json({
                 message: "unauthorized"
             })
             return
         }
-        if (req.user.role !== "admin" && req.user.role !== "superadmin") {
-            res.status(403).json({
-                message: "unauthorized"
+        if(req.user.role !== "admin" && req.user.role !== "superadmin"){
+            await appointment.findOneAndDelete({ appointmentId: req.params.appointmentId, email: req.user.email }).then(() => {
+                res.json({
+                    message: "Appointment deleted successfully"
+                })
+            }).catch((err) => {
+                console.log(err)
+                res.status(500).json({
+                    message: "An error occurred"
+                })
             })
             return
         }
-
-        const appointmentId = req.params.appointmentId
-        const appointmentDeleted = await appointment.findOneAndDelete({ appointmentId: appointmentId, email: req.user.email })
-        if (appointmentDeleted == null) {
-            res.status(404).json({
-                message: "Appointment not found"
+        if (req.user.role == "admin" || req.user.role == "superadmin") {
+             await appointment.findOneAndDelete({ appointmentId: appointmentId}).then(() => {
+            res.json({
+                message: "Appointment deleted successfully"
             })
-            return
-        }
-        res.json({
-            message: "Appointment deleted successfully"
+        }).catch((err) => {
+            console.log(err)
+            res.status(500).json({
+                message: "An error occurred"
+            })
         })
+            return
+        }
 
     }
     catch (err) {
@@ -176,4 +182,20 @@ export async function deleteAppointment(req, res) {
             message: "An error occurred"
         })
     }
+}
+export async function deleteOldAppointment() {
+    try {
+        const twoWeeksAgo = new Date();
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+        const result = await appointment.deleteMany({
+            date: { $lt: twoWeeksAgo },
+            status: "Complete"
+        });
+
+        console.log(`Deleted ${result.deletedCount} old appointments`);
+    } catch (err) {
+        console.log("Error deleting old appointments:", err);
+    }
+    
 }

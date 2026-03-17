@@ -16,6 +16,15 @@ const orderSchema= new mongoose.Schema({
         default:Date.now
     
     },
+    estimatedDeliveryDate:{
+        type:Date,
+        required:true,
+        default: function() {
+            const estimatedDate = new Date();
+            estimatedDate.setDate(estimatedDate.getDate() + 7); 
+            return estimatedDate;
+          }
+    },
     email:{
         type:String,
         required:true
