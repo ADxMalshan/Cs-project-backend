@@ -22,11 +22,13 @@ export function saveUser(req, res) {
     }
 
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    console.log(req.body);
     const user = new User({
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         password: hashedPassword,
+        phone: req.body.phone,
         profilePicture:"https://vzkmtbdcbuxxtsmnjwcl.supabase.co/storage/v1/object/public/images/new/caring-for-your-pet.jpg",
         role: req.body.role
     }) 
@@ -279,16 +281,11 @@ export function getUserDetails(req,res){
         })
         return
     }
-  res.json({
-    user:{
-        email: req.user.email,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        role: req.user.role,
-        phone:req.user.phone,
-        profilePicture:req.user.profilePicture,
-        isDisabled: req.user.isDisabled,
-        isEmailVerified: req.user.isEmailVerified
-    }
-  })
+    User.findOne({
+        email:req.user.email
+    }).then((user)=>{
+        res.json({
+            user:user
+        })
+    })
 }
