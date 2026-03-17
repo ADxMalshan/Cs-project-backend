@@ -27,7 +27,7 @@ export function saveUser(req, res) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         password: hashedPassword,
-        profilePicture:"https://vzkmtbdcbuxxtsmnjwcl.supabase.co/storage/v1/object/public/images/1751450096442WhatsApp%20Image%202025-06-28%20at%208.04.25%20PM.jpeg",
+        profilePicture:"https://vzkmtbdcbuxxtsmnjwcl.supabase.co/storage/v1/object/public/images/new/caring-for-your-pet.jpg",
         role: req.body.role
     }) 
 

@@ -6,8 +6,6 @@ import productRouter from './Routes/producrRouter.js';
 import verifyJWT from './middleWare/verifyJwt.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import slideImageRouter from './Routes/slideImageRoute.js';
-import reviewsAndCommentsRouter from './Routes/reviewsAndComments.js';
 import appointmentRouter from './Routes/appointmentHistoryRouter.js';
 import orderRouter from './Routes/orderRouter.js';
 
@@ -34,8 +32,7 @@ app.use("/api/user", userRouter)
 app.use("/api/product", productRouter)
 app.use("/api/appointment",appointmentRouter)
 app.use("/api/order",orderRouter)
-app.use("/api/slider",slideImageRouter)
-app.use("/api/reviewsAndComments",reviewsAndCommentsRouter)
+
 
 
 app.listen(3000, () => {

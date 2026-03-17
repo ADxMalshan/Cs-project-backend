@@ -31,8 +31,8 @@ export async function createOrder(req, res) {
             orderData.orderId = "ORD0001"
         } else {
             const lastBill = lastBills[0]
-            const lastOrderId = lastBill.orderId  //ORD001
-            const lastOrderNumber = lastOrderId.replace("ORD", "")  //001
+            const lastOrderId = lastBill.orderId 
+            const lastOrderNumber = lastOrderId.replace("ORD", "")  
             const lastOrderNumberInt = parseInt(lastOrderNumber) //1
             const newOrderNumberInt = lastOrderNumberInt + 1
             const newOrderNumberstr = newOrderNumberInt.toString().padStart(4, "0")
