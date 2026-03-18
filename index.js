@@ -10,6 +10,7 @@ import appointmentRouter from './Routes/appointmentHistoryRouter.js';
 import orderRouter from './Routes/orderRouter.js';
 import cron from 'node-cron';
 import { deleteOldAppointment } from './controllers/appointmentHistroyController.js';
+import { deleteOldOrders } from './controllers/orderController.js';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use("/api/order",orderRouter)
 
 cron.schedule('0 0 * * *', async () => {
     deleteOldAppointment();
+    deleteOldOrders();
 });
 
 

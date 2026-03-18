@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import axios from "axios";
+import appointment from "../models/appointmentHistory.js";
+import Order from "../models/order.js";
 dotenv.config()
 export function saveUser(req, res) {
     if (req.body.role == "superadmin") {
@@ -236,7 +238,7 @@ export  function updateUserRole(req, res) {
     )
 }
 
-export function deleteUser(req,res){
+export async function deleteUser(req,res){
     if (req.user == null) {
         res.status(403).json({
             message: "You need to login first"
@@ -256,7 +258,12 @@ export function deleteUser(req,res){
         })
         return;
     }
-
+    await appointment.deleteMany({
+        email:req.params.email
+    })
+    await Order.deleteMany({
+        email:req.params.email
+    })
     User.findOneAndDelete({
         email: req.params.email
     }).then(

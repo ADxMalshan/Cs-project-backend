@@ -158,7 +158,7 @@ export async function updateAppointmentUser(req, res) {
         appointment.findOneAndUpdate({ appointmentId: req.params.appointmentId, email: req.user.email }, 
             {
                 ...req.body,
-                status: "Complete",
+                status: "Pending",
                 imageUrl: imageUrl
             }
 
@@ -225,7 +225,7 @@ export async function deleteOldAppointment() {
 
         const result = await appointment.deleteMany({
             date: { $lt: twoWeeksAgo },
-            status: "Complete"
+            status: { $in: ["Complete", "Cancelled"] }
         });
 
         console.log(`Deleted ${result.deletedCount} old appointments`);

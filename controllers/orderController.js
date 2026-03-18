@@ -212,3 +212,18 @@ export async function deleteOrder(req,res) {
         })
     }
 }
+export async function deleteOldOrders() {
+    try {
+        const twoWeeksAgo = new Date();
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+        const result = await Order.deleteMany({
+            date: { $lt: twoWeeksAgo },
+            status: { $in: ["Delivered", "Cancelled"] }
+        });
+
+        console.log(`Deleted ${result.deletedCount} old orders`);
+    } catch (err) {
+        console.log("Error deleting old orders:", err);
+    }
+}
