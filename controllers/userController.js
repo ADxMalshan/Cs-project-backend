@@ -70,7 +70,7 @@ export function loginUser(req, res) {
                     isEmailVerified: user.isEmailVarified,
                     profilePicture: user.profilePicture
                 }
-                const token = jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "1h" })
+                const token = jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "1m" })
                 res.json({
                     message: "login successfull",
                     token: token,
